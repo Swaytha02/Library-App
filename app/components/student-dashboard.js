@@ -2,16 +2,24 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { books } from '../data/books';
+import { books as defaultBooks } from '../data/books';
 
 export default class StudentDashboard extends Component {
     @service session;
     @service router;
+
     @tracked sortBy = 'title';
     @tracked books = [];
 
+    constructor() {
+        super(...arguments);
+
+        const storedBooks = localStorage.getItem('books');
+        this.books = storedBooks ? JSON.parse(storedBooks) : [...defaultBooks];
+    }
+
     get totalIssued() {
-        return books.filter(book => book.issuedTo === this.session.currentUser.id);
+        return this.books.filter(book => book.issuedTo === this.session.currentUser.id);
     }
 
     get overDueBooks() {
@@ -25,7 +33,7 @@ export default class StudentDashboard extends Component {
     }
 
     get sortedBooks() {
-        return books
+        return this.books
         .filter(book => !book.isIssued)
         .slice()
         .sort((a,b) => {
@@ -51,8 +59,7 @@ export default class StudentDashboard extends Component {
 
     get issuedBooks() {
         const today = new Date();
-
-        return books
+        return this.books
         .filter(book => book.isIssued && book.issuedTo === this.session.currentUser.id)
         .map(book => ({
             ...book, 
@@ -66,23 +73,25 @@ export default class StudentDashboard extends Component {
     }
 
     @action
-    async requestBook(book) {
-        if(!book.isIssued) {
-            book.isIssued = true;
-            book.issuedTo = this.session.currentUser.id;
-            book.dueDate = new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10); 
-            
-            this.books = [...books]; 
-            
-            localStorage.setItem('books', JSON.stringify(this.books));
-        } else {
-            alert("This book is already issued.");
+    requestBook(book) {
+        if (book.issuedCount >= book.count) {
+            alert(`${book.title} is currently unavailable.`);
+            return;
         }
-    }
 
-    @action
-    logOut() {
-        this.session.logOut();
-        this.router.transitionTo('login');
+        const updatedBooks = this.books.map(b => {
+            if (b.id === book.id) {
+                return {
+                    ...b,
+                    isRequested: true,
+                    requestedBy: this.session.currentUser.id
+                };
+            }
+            return b;
+        });
+
+        this.books = updatedBooks;
+        localStorage.setItem('books', JSON.stringify(this.books));
+        alert(`${book.title} has been requested.`);
     }
 }

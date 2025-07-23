@@ -12,7 +12,12 @@ Router.map(function () {
     this.route('book-issued');
     this.route('total-students');
   });
-  this.route('login-page');
+  this.route('login-page', { path:'login'});
   this.route('student-dashboard');
+
+  this.route('profile', function() {
+    this.route('settings');
+  });
+  this.route('error-page', { path:'/*'});
 });
 

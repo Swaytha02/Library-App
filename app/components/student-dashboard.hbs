@@ -1,6 +1,6 @@
 <header class="dashboard-header">
-  <h2>🎓 Student Dashboard - {{this.student}}</h2>
-  <button type="button" {{on "click" this.logOut}}>Logout</button>
+  <h1>🎓 Student Dashboard - {{this.student}}</h1>
+  <Profile />
 </header>
 
 <section class="dashboard-summary">
@@ -14,7 +14,6 @@
     <select class="sort-select" value={{this.sortBy}} {{on "change" this.changeSort}}>
       <option value="title">Title</option>
       <option value="author">Author</option>
-      <option value="dueDate">DueDate</option>
     </select>
   </label>
 </section>
@@ -36,7 +35,13 @@
             <td>{{book.title}}</td>
             <td>{{book.author}}</td>
             <td>
-              <button type="button" {{on "click" (fn this.requestBook book)}}>Request</button>
+              {{#if (gte book.issuedCount book.count)}}
+                <button type="button" disabled>Full</button>
+              {{else if (and book.isRequested (eq book.requestedBy this.session.currentUser.id))}}
+                <button type="button" disabled>Requested</button>
+              {{else}}
+                <button type="button" {{on "click" (fn this.requestBook book)}}>Request</button>
+              {{/if}}
             </td>
           </tr>
         {{/unless}}

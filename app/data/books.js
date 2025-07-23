@@ -2,28 +2,22 @@ export const books = [
   {
     id: '1',
     title: 'The Great Gatsby',
-    author: 'F. Scott Fitzgerald',
-    isIssued: true,
-    dueDate: '2025-07-05',  
-    issuedTo: '2',
+    author: 'F. Scott Fitzgerald', 
+    issuedCount: 3,
     count: 100
   },
   {
     id: '2',
     title: 'To Kill a Mockingbird',
-    author: 'Harper Lee',
-    isIssued: true,
-    dueDate: '2025-07-20',  
-    issuedTo: '3',
+    author: 'Harper Lee',  
+    issuedCount: 3,
     count: 50
   },
   {
     id: '3',
     title: '1984',
-    author: 'George Orwell',
-    isIssued: false,
-    dueDate: null,          
-    issuedTo: null,
+    author: 'George Orwell',          
+    issuedCount: 0,
     count: 200
   }
 ];

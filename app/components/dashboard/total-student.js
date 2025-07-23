@@ -4,13 +4,24 @@ import { action } from '@ember/object';
 
 export default class DashboardTotalStudent extends Component {
     @tracked selectedStudent = null;
+    @tracked requests = [];
 
-    get requests() {
-        return this.args.requests || [];
+    constructor() {
+        super(...arguments);
+        this.loadRequests();
+    }
+
+    loadRequests() {
+        const stored = localStorage.getItem('requests');
+        this.requests = stored ? JSON.parse(stored) : [];
+    }
+
+    get allUsers() {
+        return this.args.users || [];
     }
 
     @action
-    selectedStudent(user) {
+    selectStudent(user) {
         this.selectedStudent = user;
     }
 
@@ -22,15 +33,25 @@ export default class DashboardTotalStudent extends Component {
         return this.requests.find((r) => r.studentId === studentId && r.status === 'pending');
     }
 
+    updateStorage() {
+        localStorage.setItem('requests', JSON.stringify(this.requests));
+    }
+
     @action
     approveRequest(request) {
-        request.status = 'approved';
-        alert(`Book approved for ${this.selectedStudent.name}`);
+        this.requests = this.requests.map((r) => 
+            r === request ? {...r, status: 'approved'} : r
+        );
+        this.updateStorage();
+        alert(`Book approved for ${this.selectedStudent?.name}`);
     }
 
     @action
     denyRequest(request) {
-        request.status = 'rejected';
-        alert(`Request denied for ${this.selectedStudent.name}`);
+        this.requests = this.requests.map((r) => 
+            r === request ? {...r, status: 'rejected'} : r
+        );
+        this.updateStorage();
+        alert(`Request denied for ${this.selectedStudent?.name}`);
     }
 }

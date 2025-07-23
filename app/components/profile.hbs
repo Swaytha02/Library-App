@@ -1,0 +1,11 @@
+<div class="profile-container" {{on-click-outside this.closeMenu}}>
+    <div class="profile-icon" {{on "click" this.toggleProfileMenu}}>
+        <i class="fa-solid fa-user"></i>
+    </div>
+    <div class={{if this.showProfileMenu "profile-popup show" "profile-popup"}}>
+        <ul>
+            <li><LinkTo class="profile-setting-link" @route="profile.settings">Profile Settings</LinkTo></li>
+            <li><button type="button" {{on "click" this.logOut}}>Logout</button></li>
+        </ul>
+    </div>
+</div>

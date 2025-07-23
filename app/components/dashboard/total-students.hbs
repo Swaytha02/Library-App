@@ -15,7 +15,7 @@
                     <p>No pending requests.</p>
                 {{/if}}
             {{else}}
-            <p>Select a student to view details</p>
+                <p>Select a student to view details</p>
             {{/if}}
         </div>
     </section>
@@ -31,6 +31,7 @@
                             {{#if (this.hasPendingRequest user.id)}}
                                 <span class="notification-dot"></span>
                             {{/if}}
+                            <button type="button" {{on "click" (fn this.selectStudent user)}}>View Request</button>
                         </li>
                     {{/if}}
                 {{/each}}
