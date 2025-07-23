@@ -1,1 +1,305 @@
-/* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
+* {
+  margin: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+h1 {
+  margin: 20px 5px;
+  color: #333;
+}
+
+.dashboard-nav {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #474646;
+  color: white;
+  margin: 20px 0;
+  height: 60px;
+  width: 100%;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 10.7%);
+}
+
+.dashboard-link {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.dashboard-link:hover {
+  background-color: rgb(86 86 86);
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f4f8;
+    height: 100vh;
+}
+
+.login-div {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgb(0 0 0 / 15%);
+  width: 350px;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label {
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #555;
+}
+
+.login-form input {
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form button {
+  padding: 10px;
+  background-color: #2a9d8f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-form button:hover {
+  background-color: #21867a;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.books-table-container {
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+  background-color: white;
+}
+
+.books-table th {
+  background-color: #219bf1;
+  color: white;
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.books-table td {
+  padding: 12px;
+  border-top: 1px solid #ccc;
+}
+
+.books-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.books-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.layout-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.student-details {
+  flex: 1;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+.student-container {
+  width: 300px;
+  background-color: #f0f4ff;
+  border-left: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.scroll-area {
+  height: 100%;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.student-item {
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+}
+
+.student-item:hover {
+  background-color: #e6ecff;
+}
+
+.notification-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.request-box {
+  background-color: #fff4f4;
+  border: 1px solid #fcc;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+
+.request-box button {
+  margin-right: 1rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f5f7fa;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.dashboard-header button {
+  padding: 0.5rem 1rem;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dashboard-header button:hover {
+  background: #e33c3c;
+}
+
+.dashboard-summary {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: #eef2f8;
+}
+
+.summary-card {
+  flex: 1;
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  text-align: center;
+}
+
+.book-controls {
+  padding: 1rem 1.5rem 0;
+}
+
+.book-controls label {
+  font-weight: bold;
+}
+
+.sort-select {
+  width: 180px;     
+  padding: 6px 10px;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f0f4ff;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+.available-books,
+.issued-books {
+  padding: 1rem 1.5rem 2rem;
+  background: white;
+  margin-top: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+}
+
+button {
+  background: #007bff;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+@media (width <= 768px) {
+  .dashboard-summary {
+    flex-direction: column;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+} 

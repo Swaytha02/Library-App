@@ -1,0 +1,70 @@
+<header class="dashboard-header">
+  <h2>🎓 Student Dashboard - {{this.student}}</h2>
+  <button type="button" {{on "click" this.logOut}}>Logout</button>
+</header>
+
+<section class="dashboard-summary">
+  <div class="summary-card">Total Issued: {{this.totalIssued.length}}</div>
+  <div class="summary-card">Overdue Books: {{this.overDueBooks.length}}</div>
+</section>
+
+<section class="book-controls">
+  <label>
+    Sort by:
+    <select class="sort-select" value={{this.sortBy}} {{on "change" this.changeSort}}>
+      <option value="title">Title</option>
+      <option value="author">Author</option>
+      <option value="dueDate">DueDate</option>
+    </select>
+  </label>
+</section>
+
+<section class="available-books">
+  <h3>Available Books</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.sortedBooks as |book|}}
+        {{#unless book.isIssued}}
+          <tr>
+            <td>{{book.title}}</td>
+            <td>{{book.author}}</td>
+            <td>
+              <button type="button" {{on "click" (fn this.requestBook book)}}>Request</button>
+            </td>
+          </tr>
+        {{/unless}}
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
+<section class="issued-books">
+  <h3>My Issued Books</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.issuedBooks as |book|}}
+        <tr>
+          <td>{{book.title}}</td>
+          <td>{{book.dueDate}}</td>
+          <td>
+            {{#if book.isOverdue}}⚠️ Overdue{{else}}✅ On Time{{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

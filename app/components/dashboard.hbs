@@ -1,0 +1,16 @@
+<h1>Library Dashboard</h1>
+<section class="dashboard-nav">
+    <LinkTo class="dashboard-link" @route="dashboard.total-books">
+        Total Books
+    </LinkTo>
+    <LinkTo class="dashboard-link" @route="dashboard.book-issued">
+        Book Issued
+    </LinkTo>
+    <LinkTo class="dashboard-link" @route="dashboard.total-students">
+        Total Students
+    </LinkTo>
+</section>
+
+{{#if (eq this.router.currentRoute.name "dashboard.index")}}
+  <Dashboard::OverdueBooks @books={{this.overDueBooks}} />
+{{/if}}

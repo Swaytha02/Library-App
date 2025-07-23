@@ -1,0 +1,32 @@
+<section class="login-container">
+  <div class="login-div">
+    <h2>Library Login</h2>
+    <form method="POST" class="login-form" {{on 'submit' this.handleLogin}}>
+      <label for="username">Username or Email</label>
+      <input 
+      type="text" 
+      id="username" 
+      name="username"
+      value={{this.username}} 
+      {{on 'input' this.updateUsername}}
+      placeholder="Enter username or email"
+      required />
+
+      <label for="password">Password</label>
+      <input 
+      type="password" 
+      id="password" 
+      name="password" 
+      value={{this.password}} 
+      {{on 'input' this.updatePassword}}
+      placeholder="Enter your password"
+      required />
+
+      <button type="submit">Login</button>
+
+      {{#if this.errorMessage}}
+        <p class="error-message">{{this.errorMessage}}</p>
+      {{/if}}
+    </form>
+  </div>
+</section>

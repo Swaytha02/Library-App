@@ -1,0 +1,11 @@
+<Dashboard::BookDetails @isIssued={{true}}>
+    {{#each @books as |book|}}
+    <tr>
+        <td>{{book.id}}</td>
+        <td>{{book.title}}</td>
+        <td>{{book.author}}</td>
+        <td>{{book.count}}</td>
+        <td>{{book.issuedTo}}</td>
+    </tr>
+    {{/each}}
+</Dashboard::BookDetails>

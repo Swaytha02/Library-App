@@ -1,0 +1,40 @@
+<div class="layout-container">
+    <section class="student-details">
+        <div class="scroll-area">
+            {{#if this.selectedStudent}}
+                <h2>{{this.selectedStudent.name}}</h2>
+                <p><strong>ID:</strong> {{this.selectedStudent.id}}</p>
+
+                {{#if (this.getStudentRequest this.selectdStudent.id) as |request|}}
+                    <div class="request-box">
+                        <p><strong>Request:</strong> {{request.bookTitle}}</p>
+                        <button type="button" {{on 'click' (fn this.approveRequest request)}}>OK</button>
+                        <button type="button" {{on 'click' (fn this.denyRequest request)}}>Deny</button>
+                    </div>
+                {{else}}
+                    <p>No pending requests.</p>
+                {{/if}}
+            {{else}}
+            <p>Select a student to view details</p>
+            {{/if}}
+        </div>
+    </section>
+
+    <section class="student-container">
+        <div class="scroll-area">
+            <h3>Students</h3>
+            <ul>
+                {{#each @users as |user|}}
+                    {{#if (eq user.role 'student')}}
+                        <li class="student-item" {{on "click" (fn this.selectStudent user)}}>
+                            {{user.name}}
+                            {{#if (this.hasPendingRequest user.id)}}
+                                <span class="notification-dot"></span>
+                            {{/if}}
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ul>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,12 @@
+<Dashboard::BookDetails>
+    {{#each @books as |book|}}
+        {{#if (this.isDateExpired book.dueDate)}}
+            <tr>
+                <td>{{book.id}}</td>
+                <td>{{book.title}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.dueDate}}</td>
+            </tr>
+        {{/if}}
+    {{/each}}
+</Dashboard::BookDetails>
