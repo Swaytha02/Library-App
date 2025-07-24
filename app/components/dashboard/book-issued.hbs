@@ -12,6 +12,16 @@
             Not Assigned
           {{/if}}
         </td>
+        <td>
+            <div class="assign-student">
+                <input
+                    type="text"
+                    placeholder="Student ID"
+                    {{on "input" (fn this.updateStudentId book.id)}}
+                />
+                <button type="button" {{on "click" (fn this.assignBookToStudent book)}}>Assign</button>
+            </div>
+        </td>
     </tr>
     {{/each}}
 </Dashboard::BookDetails>

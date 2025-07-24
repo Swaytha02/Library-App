@@ -401,6 +401,11 @@ input {
   background-color: #1e40af;
 }
 
+.assign-student {
+  display: flex;
+  gap: 8px;
+}
+
 @media (width <= 768px) {
   .dashboard-summary {
     flex-direction: column;
