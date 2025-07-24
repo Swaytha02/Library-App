@@ -10,8 +10,9 @@ export default class BookIssued extends Component {
     @tracked studentInputs = {};
     @tracked isStudentModalOpen = false;
 
-    @tracked newStudentId = '';
     @tracked newStudentName = '';
+    @tracked newStudentUsername = '';
+    @tracked newStudentPassword = '';
 
     get books() {
         return this.bookStore.books;
@@ -37,13 +38,9 @@ export default class BookIssued extends Component {
     @action 
     toggleStudentModal() {
         this.isStudentModalOpen = !this.isStudentModalOpen;
-        this.newStudentId = '';
         this.newStudentName = '';
-    }
-
-    @action
-    updateStudentIdField(event) {
-        this.newStudentId = event.target.value;
+        this.newStudentUsername = '';
+        this.newStudentPassword = '';
     }
 
     @action
@@ -51,17 +48,29 @@ export default class BookIssued extends Component {
         this.newStudentName = event.target.value;
     }
 
+    @action
+    updateStudentUsernameField(event) {
+        this.newStudentUsername = event.target.value;
+    }
+
+    @action
+    updateStudentPassword(event) {
+        this.newStudentPassword = event.target.value;
+    }
+
     @action 
     addStudent() {
-        if (!this.newStudentId || !this.newStudentName) {
+        if (!this.newStudentName || !this.newStudentUsername || !this.newStudentPassword) {
             alert('Please enter all student details');
             return;
         }
 
         this.studentStore.addStudent({
-            id: this.newStudentId,
+            id: String(this.studentStore.students.length + 2),
             name: this.newStudentName,
+            password: this.newStudentPassword,
             role: 'student',
+            username: this.newStudentUsername,
         });
 
         this.toggleStudentModal();

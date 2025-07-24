@@ -6,8 +6,9 @@
   <div class="modal-overlay">
     <div class="modal">
       <h2>Add New Student</h2>
-      <input type="text" placeholder="Student ID" {{on "input" this.updateStudentIdField}} />
-      <input type="text" placeholder="Student Name" {{on "input" this.updateStudentNameField}} />
+      <input type="text" placeholder="Name" {{on "input" this.updateStudentNameField}} />
+      <input type="text" placeholder="Password" {{on "input" this.updateStudentUsernameField}} />
+      <input type="text" placeholder="Username" {{on "input" this.updateStudentPassword}} />
       <div class="modal-buttons">
         <button type="button" {{on "click" this.addStudent}}>Save</button>
         <button type="button" {{on "click" this.toggleStudentModal}}>Cancel</button>
