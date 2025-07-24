@@ -67,6 +67,16 @@ export default class StudentDashboard extends Component {
         }));
     }
 
+    get availableBooks() {
+        const books = JSON.parse(localStorage.getItem('books')) || [];
+
+        return books.filter(book => {
+            const total = book.count || 0;
+            const issued = book.issuedCount || 0;
+            return total > issued;
+        });
+    }
+
     @action
     changeSort(event) {
         this.sortBy = event.target.value;
@@ -93,5 +103,14 @@ export default class StudentDashboard extends Component {
         this.books = updatedBooks;
         localStorage.setItem('books', JSON.stringify(this.books));
         alert(`${book.title} has been requested.`);
+
+        const existingRequests = JSON.parse(localStorage.getItem('requests')) || [];
+        existingRequests.push({
+            studentId: this.session.currentUser.id,
+            bookId: book.id,
+            bookTitle: book.title,
+            status: 'pending'
+        });
+        localStorage.setItem('requests', JSON.stringify(existingRequests));
     }
 }

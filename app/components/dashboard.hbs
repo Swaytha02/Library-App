@@ -16,6 +16,24 @@
     </LinkTo>
 </section>
 
+{{!-- Show overdue books only on the dashboard index --}}
 {{#if (eq this.router.currentRoute.name "dashboard.index")}}
-  <Dashboard::OverdueBooks @books={{this.overDueBooks}} />
+  <section class="overdue-section">
+    <h2>Overdue Books</h2>
+
+    {{#if this.overDueBooks.length}}
+      <Dashboard::BookDetails>
+        {{#each this.overDueBooks as |book|}}
+          <tr>
+            <td>{{book.id}}</td>
+            <td>{{book.title}}</td>
+            <td>{{book.author}}</td>
+            <td>{{book.count}}</td>
+          </tr>
+        {{/each}}
+      </Dashboard::BookDetails>
+    {{else}}
+      <p>No overdue books.</p>
+    {{/if}}
+  </section>
 {{/if}}

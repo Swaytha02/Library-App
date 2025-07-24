@@ -25,15 +25,17 @@
       <tr>
         <th>Title</th>
         <th>Author</th>
+        <th>Available</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
       {{#each this.sortedBooks as |book|}}
-        {{#unless book.isIssued}}
+        {{#if (lt book.issuedCount book.count)}}
           <tr>
             <td>{{book.title}}</td>
             <td>{{book.author}}</td>
+            <td>{{subtract book.count book.issuedCount}} / {{book.count}}</td>
             <td>
               {{#if (gte book.issuedCount book.count)}}
                 <button type="button" disabled>Full</button>
@@ -44,7 +46,7 @@
               {{/if}}
             </td>
           </tr>
-        {{/unless}}
+        {{/if}}
       {{/each}}
     </tbody>
   </table>

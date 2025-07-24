@@ -5,15 +5,49 @@
                 <h2>{{this.selectedStudent.name}}</h2>
                 <p><strong>ID:</strong> {{this.selectedStudent.id}}</p>
 
-                {{#if (this.getStudentRequest this.selectdStudent.id) as |request|}}
-                    <div class="request-box">
-                        <p><strong>Request:</strong> {{request.bookTitle}}</p>
-                        <button type="button" {{on 'click' (fn this.approveRequest request)}}>OK</button>
-                        <button type="button" {{on 'click' (fn this.denyRequest request)}}>Deny</button>
-                    </div>
-                {{else}}
-                    <p>No pending requests.</p>
-                {{/if}}
+                {{!-- Pending Request Section --}}
+                {{#let (this.getStudentRequest this.selectedStudent.id) as |request|}}
+                    {{#if request}}
+                        <div class="request-box">
+                            <p><strong>Request:</strong> {{request.bookTitle}}</p>
+                            <button type="button" {{on 'click' (fn this.approveRequest request)}}>OK</button>
+                            <button type="button" {{on 'click' (fn this.denyRequest request)}}>Deny</button>
+                        </div>
+                    {{else}}
+                        <p>No pending requests.</p>
+                    {{/if}}
+                {{/let}}
+
+                {{!-- Issued Books section--}}
+                {{#let (this.getIssuedBooks this.selectedStudent.id) as |issuedBooks|}}
+                    <h4>Issued Books</h4>
+                        {{#if issuedBooks.length}}
+                        <ul>
+                            {{#each issuedBooks as |book|}}
+                                <li>{{book.title}} - Due on {{book.dueDate}}</li>
+                            {{/each}}
+                        </ul>
+                        {{else}}
+                            <p>No books currently issued.</p>
+                        {{/if}}
+                {{/let}}
+
+                {{!-- Library Summary --}}
+                <h4>Library Summary</h4>
+                <ul>
+                    <li>Total Books: {{this.booksSummary.total}}</li>
+                    <li>Issued Books: {{this.booksSummary.issued}}</li>
+                    <li>Available Books: {{this.booksSummary.available}}</li>
+                </ul>
+
+                <h5>All Books:</h5>
+                <ul>
+                    {{#each this.booksSummary.books as |book|}}
+                        <li>
+                            {{book.title}} - Available: {{subtract book.count book.issuedCount}} / {{book.count}}
+                        </li>
+                    {{/each}}
+                </ul>
             {{else}}
                 <p>Select a student to view details</p>
             {{/if}}
@@ -24,14 +58,19 @@
         <div class="scroll-area">
             <h3>Students</h3>
             <ul>
-                {{#each @users as |user|}}
+                {{#each this.allUsers as |user|}}
                     {{#if (eq user.role 'student')}}
                         <li class="student-item" {{on "click" (fn this.selectStudent user)}}>
-                            {{user.name}}
                             {{#if (this.hasPendingRequest user.id)}}
-                                <span class="notification-dot"></span>
+                                {{#let (this.getStudentRequest user.id) as |request|}}
+                                    {{#if (eq request.status "pending")}}
+                                        <span class="notification-dot"></span>
+                                    {{/if}}
+                                {{/let}}
                             {{/if}}
-                            <button type="button" {{on "click" (fn this.selectStudent user)}}>View Request</button>
+                            <span class="clickable-student-name">
+                                {{user.name}}
+                            </span>
                         </li>
                     {{/if}}
                 {{/each}}

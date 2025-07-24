@@ -4,8 +4,17 @@
     </div>
     <div class={{if this.showProfileMenu "profile-popup show" "profile-popup"}}>
         <ul>
-            <li><LinkTo class="profile-setting-link" @route="profile.settings">Profile Settings</LinkTo></li>
-            <li><button type="button" {{on "click" this.logOut}}>Logout</button></li>
+            {{#if (eq this.currentUser.role "admin")}}
+                <li>
+                    <LinkTo class="profile-setting-link" @route="dashboard">Dashboard</LinkTo>
+                </li>
+            {{/if}}
+            <li>
+                <LinkTo class="profile-setting-link" @route="profile.settings">Profile Settings</LinkTo>
+            </li>
+            <li>
+                <button type="button" {{on "click" this.logOut}}>Logout</button>
+            </li>
         </ul>
     </div>
 </div>

@@ -17,7 +17,10 @@ export default class Profile extends Component {
     closeMenu() {
         this.showProfileMenu = false;
     }
-
+    @service session;
+    get currentUser() {
+        return this.session.currentUser;
+    }
     @action
     logOut() {
         this.session.logOut();
