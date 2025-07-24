@@ -1,5 +1,24 @@
+<section class="add-book-section">
+  <button class="add-book-btn" type="button" {{on "click" this.toggleModal}}>Add Book</button>
+</section>
+
+{{#if this.isModalOpen}} 
+    <div class="modal-overlay">
+        <div class="modal">
+            <h2>Add New Book</h2>
+            <input type="text" placeholder="Title" {{on "input" this.updateTitle}} />
+            <input type="text" placeholder="Author" {{on "input" this.updateAuthor}} />
+            <input type="text" placeholder="Count" {{on "input" this.updateCount}} />
+            <div class="modal-buttons">
+                <button type="button" {{on "click" this.addBook}}>Save</button>
+                <button type="button" {{on "click" this.toggleModal}}>Cancel</button>
+            </div>
+        </div>
+    </div>
+{{/if}}
+
 <Dashboard::BookDetails>
-    {{#each @books as |book|}}
+    {{#each this.books as |book|}}
     <tr>
         <td>{{book.id}}</td>
         <td>{{book.title}}</td>

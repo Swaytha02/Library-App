@@ -1,5 +1,23 @@
+<section class="add-student-section">
+  <button class="add-student-btn" type="button" {{on "click" this.toggleStudentModal}}>Add Student</button>
+</section>
+
+{{#if this.isStudentModalOpen}} 
+  <div class="modal-overlay">
+    <div class="modal">
+      <h2>Add New Student</h2>
+      <input type="text" placeholder="Student ID" {{on "input" this.updateStudentIdField}} />
+      <input type="text" placeholder="Student Name" {{on "input" this.updateStudentNameField}} />
+      <div class="modal-buttons">
+        <button type="button" {{on "click" this.addStudent}}>Save</button>
+        <button type="button" {{on "click" this.toggleStudentModal}}>Cancel</button>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
 <Dashboard::BookDetails @isIssued={{true}}>
-    {{#each @books as |book|}}
+    {{#each this.books as |book|}}
     <tr>
         <td>{{book.id}}</td>
         <td>{{book.title}}</td>
@@ -17,9 +35,10 @@
                 <input
                     type="text"
                     placeholder="Student ID"
+                    value={{this.studentInputs.[book.id]}}
                     {{on "input" (fn this.updateStudentId book.id)}}
                 />
-                <button type="button" {{on "click" (fn this.assignBookToStudent book)}}>Assign</button>
+                <button type="button" {{on "click" (fn this.assignBookToStudent book.id)}}>Assign</button>
             </div>
         </td>
     </tr>

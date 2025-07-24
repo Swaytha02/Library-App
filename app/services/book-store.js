@@ -1,9 +1,23 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import { books as initialBooks } from '../data/books';
 
 export default class BookStoreService extends Service {
-    @tracked books = [...initialBooks];
+    @tracked books = [];
+
+    constructor() {
+        super(...arguments);
+        const savedBooks = localStorage.getItem('books');
+        this.books = savedBooks ? JSON.parse(savedBooks) : [...initialBooks];
+    }
+
+    @action
+    addBook(newBook) {
+        this.books = [...this.books, newBook];
+        localStorage.setItem('books', JSON.stringify(this.books));
+    }
+
 
     get availableBooks() {
         return this.books.filter(book => book.issuedCount < book.count);
@@ -53,5 +67,18 @@ export default class BookStoreService extends Service {
     getTotalCount(title) {
         const book = this.books.find(b => b.title === title);
         return book ? book.count : 0;
+    }
+
+    @action
+    assignBook(bookId, studentId) {
+        const book = this.books.find(b => b.id === bookId);
+        if (!book) return;
+
+        if (!book.issuedTo.includes(studentId)) {
+            book.issuedTo.push(studentId);
+            book.issuedCount += 1;
+
+            this.saveBooks();
+        }
     }
 }

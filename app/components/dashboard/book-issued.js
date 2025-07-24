@@ -1,9 +1,21 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class BookIssued extends Component {
+    @service('book-store') bookStore;
+    @service('student-store') studentStore;
+
     @tracked studentInputs = {};
+    @tracked isStudentModalOpen = false;
+
+    @tracked newStudentId = '';
+    @tracked newStudentName = '';
+
+    get books() {
+        return this.bookStore.books;
+    }
 
     @action
     updateStudentId(bookId, event) {
@@ -11,18 +23,47 @@ export default class BookIssued extends Component {
     }
 
     @action 
-    assignBookToStudent(book) {
-        const studentId = this.studentInputs[book.id];
-        if(!studentId) return alert('Enter student Id');
-
-        if(!book.issuedTo) {
-            book.issuedTo = [];
+    assignBookToStudent(bookId) {
+        const studentId = this.studentInputs[bookId];
+        if(!studentId) {
+            alert('Enter student Id');
+            return;
         }
 
-        if(!book.issuedTo.includes(studentId)) {
-            book.issuedTo.push(studentId);
+        this.bookStore.assignBook(bookId, studentId);
+        this.studentInputs[bookId] = '';
+    }
+
+    @action 
+    toggleStudentModal() {
+        this.isStudentModalOpen = !this.isStudentModalOpen;
+        this.newStudentId = '';
+        this.newStudentName = '';
+    }
+
+    @action
+    updateStudentIdField(event) {
+        this.newStudentId = event.target.value;
+    }
+
+    @action
+    updateStudentNameField(event) {
+        this.newStudentName = event.target.value;
+    }
+
+    @action 
+    addStudent() {
+        if (!this.newStudentId || !this.newStudentName) {
+            alert('Please enter all student details');
+            return;
         }
 
-        this.studentInputs[book.id] = '';
+        this.studentStore.addStudent({
+            id: this.newStudentId,
+            name: this.newStudentName,
+            role: 'student',
+        });
+
+        this.toggleStudentModal();
     }
 }
