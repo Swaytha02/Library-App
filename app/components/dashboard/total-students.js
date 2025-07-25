@@ -8,6 +8,7 @@ export default class DashboardTotalStudent extends Component {
 
     @tracked selectedStudent = null;
     @tracked requests = [];
+    @tracked returnRequests = [];
 
     constructor() {
         super(...arguments);
@@ -17,6 +18,9 @@ export default class DashboardTotalStudent extends Component {
     loadRequests() {
         const stored = localStorage.getItem('requests');
         this.requests = stored ? JSON.parse(stored) : [];
+
+        const returnStored = localStorage.getItem('returns');
+        this.returnRequests = returnStored ? JSON.parse(returnStored) : [];
     }
 
     get allStudents() {
@@ -40,6 +44,11 @@ export default class DashboardTotalStudent extends Component {
     @action
     hasPendingRequest(studentId) {
         return this.requests.some((r) => r.studentId === studentId && (r.status === 'pending' || r.status === 'seen'));
+    }
+
+    @action
+    hasReturnRequest(studentId) {
+        return this.returnRequests.some((r) => r.studentId === studentId);
     }
 
     @action
@@ -115,5 +124,36 @@ export default class DashboardTotalStudent extends Component {
         const available = books.filter(book => (book.count || 1) > (book.issuedCount || 0)).length;
 
         return { total, issued, available, books }
+    }
+
+    @action
+    approveReturn(request) {
+        const books = JSON.parse(localStorage.getItem('books')) || [];
+
+        const updatedBooks = books.map(book => {
+            if(book.id === request.bookId && book.issuedTo === request.studentId) {
+                const issuedCount = Math.max((book.issuedCount || 1) - 1 ,0);
+                return {
+                    ...book,
+                    isIssued: false,
+                    issuedTo: null,
+                    dueDate: null,
+                    issuedCount
+                };
+            }
+            return book;
+        });
+
+        localStorage.setItem('books', JSON.stringify(updatedBooks));
+        this.returnRequests = this.returnRequests.filter(r => r != request);
+        localStorage.setItem('returns', JSON.stringify(this.returnRequests));
+
+        alert(`Book "${request.bookTitle}" returned by ${this.selectedStudent?.name}`);
+    }
+
+    @action
+    denyReturn(request) {
+        this.returnRequests = this.returnRequests.filter(r => r !== request);
+        localStorage.setItem('returns', JSON.stringify(this.returnRequests));
     }
 }

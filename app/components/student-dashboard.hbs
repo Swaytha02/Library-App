@@ -60,6 +60,7 @@
         <th>Title</th>
         <th>Due Date</th>
         <th>Status</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -68,7 +69,14 @@
           <td>{{book.title}}</td>
           <td>{{book.dueDate}}</td>
           <td>
-            {{#if book.isOverdue}}⚠️ Overdue{{else}}✅ On Time{{/if}}
+            {{#if book.isOverdue}}
+              ⚠️ Overdue
+            {{else}}
+              ✅ On Time
+            {{/if}}
+          </td>
+          <td>
+            <button type="button" {{on "click" (fn this.returnBook book)}}>Return</button>
           </td>
         </tr>
       {{/each}}

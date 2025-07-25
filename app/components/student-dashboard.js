@@ -39,17 +39,6 @@ export default class StudentDashboard extends Component {
         .sort((a,b) => {
             const key = this.sortBy;
 
-            if(key === "dueDate") {
-                const aDate = a.dueDate ? new Date(a.dueDate ) : null;
-                const bDate = b.dueDate ? new Date(b.dueDate ) : null;
-
-                if(!aDate && !bDate) return 0;
-                if(!aDate) return 1;
-                if(!bDate) return -1;
-
-                return aDate - bDate;
-            }
-
             const aValue = a[key]?.toLowerCase() || '';
             const bValue = b[key]?.toLowerCase() || '';
 
@@ -112,5 +101,18 @@ export default class StudentDashboard extends Component {
             status: 'pending'
         });
         localStorage.setItem('requests', JSON.stringify(existingRequests));
+    }
+
+    @action
+    returnBook(book) {
+        const existingReturns  = JSON.parse(localStorage.getItem('returns')) || [];
+        existingReturns .push({
+            studentId: this.session.currentUser.id,
+            bookId: book.id,
+            bookTitle: book.title,
+            status: 'pending'
+        });
+        localStorage.setItem('returns', JSON.stringify(existingReturns));
+        alert(`Return request for "${book.title}" has been sent.`);
     }
 }

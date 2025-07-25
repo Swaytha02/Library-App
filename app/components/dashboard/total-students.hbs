@@ -48,6 +48,17 @@
                         </li>
                     {{/each}}
                 </ul>
+
+                {{!-- Return Request Notification --}}
+                {{#each this.returnRequests as |request|}}
+                    {{#if (eq request.studentId this.selectedStudent.id)}}
+                        <div class="request-box">
+                            <p><strong>Return:</strong> {{request.bookTitle}}</p>
+                            <button type="button" {{on "click" (fn this.approveReturn request)}}>Accept Return</button>
+                            <button type="button" {{on "click" (fn this.denyReturn request)}}>Reject</button>
+                        </div>
+                    {{/if}}
+                {{/each}}
             {{else}}
                 <p>Select a student to view details</p>
             {{/if}}
@@ -60,12 +71,8 @@
             <ul>
                 {{#each this.allStudents as |student|}}
                     <li class="student-item" {{on "click" (fn this.selectStudent student)}}>
-                        {{#if (this.hasPendingRequest student.id)}}
-                            {{#let (this.getStudentRequest student.id) as |request|}}
-                                {{#if (eq request.status "pending")}}
-                                    <span class="notification-dot"></span>
-                                {{/if}}
-                            {{/let}}
+                        {{#if (or (this.hasPendingRequest student.id) (this.hasReturnRequest student.id))}}
+                            <span class="notification-dot"></span>
                         {{/if}}
                         <span class="clickable-student-name">
                             {{student.name}}
