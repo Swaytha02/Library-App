@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { books as defaultBooks } from '../data/books';
 
 export default class StudentDashboard extends Component {
     @service session;
@@ -13,9 +12,22 @@ export default class StudentDashboard extends Component {
 
     constructor() {
         super(...arguments);
-
         const storedBooks = localStorage.getItem('books');
         this.books = storedBooks ? JSON.parse(storedBooks) : [...defaultBooks];
+    }
+
+    get student() {
+        return this.session.currentUser?.name;
+    }
+
+    get issuedBooks() {
+        const today = new Date();
+        return this.books
+        .filter(book => book.isIssued && book.issuedTo === this.session.currentUser.id)
+        .map(book => ({
+            ...book, 
+            isOverdue: book.dueDate ? new Date(book.dueDate) < today : false
+        }));
     }
 
     get totalIssued() {
@@ -26,10 +38,6 @@ export default class StudentDashboard extends Component {
         const today = new Date();
         return this.issuedBooks
         .filter(book => book.dueDate && new Date(book.dueDate) < today);
-    }
-
-    get student() {
-        return this.session.currentUser?.name;
     }
 
     get sortedBooks() {
@@ -44,16 +52,6 @@ export default class StudentDashboard extends Component {
 
             return aValue.localeCompare(bValue);
         });
-    }
-
-    get issuedBooks() {
-        const today = new Date();
-        return this.books
-        .filter(book => book.isIssued && book.issuedTo === this.session.currentUser.id)
-        .map(book => ({
-            ...book, 
-            isOverdue: book.dueDate ? new Date(book.dueDate) < today : false
-        }));
     }
 
     get availableBooks() {

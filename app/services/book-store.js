@@ -26,11 +26,13 @@ export default class BookStoreService extends Service {
     get issuedBooks() {
         return this.books.filter(book => book.issuedCount > 0);
     }
-
+    
+    @action
     getBookById(id) {
         return this.books.find(book => book.id === id);
     }
 
+    @action
     requestBook(bookId, studentId) {
         let updated = false;
         this.books = this.books.map(book => {
@@ -46,6 +48,7 @@ export default class BookStoreService extends Service {
         return updated;
     }
 
+    @action
     returnBook(bookId) {
         this.books = this.books.map(book => {
         if (book.id === bookId && book.issuedCount > 0) {
@@ -58,12 +61,14 @@ export default class BookStoreService extends Service {
         });
     }
 
+    @action
     updateBook(updatedBook) {
         this.books = this.books.map(book => 
             book.id === updatedBook.id ? updatedBook : book
         );
     }
 
+    @action
     getTotalCount(title) {
         const book = this.books.find(b => b.title === title);
         return book ? book.count : 0;
