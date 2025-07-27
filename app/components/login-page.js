@@ -3,12 +3,12 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { users } from '../data/users';
-import { books } from '../data/books';
 
 export default class LoginPage extends Component {
     @service('store') store;
     @service('router') router;
     @service session;
+    @service studentStore;
 
     @tracked username = '';
     @tracked password = '';

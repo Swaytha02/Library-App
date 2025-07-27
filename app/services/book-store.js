@@ -15,7 +15,7 @@ export default class BookStoreService extends Service {
     @action
     addBook(newBook) {
         this.books = [...this.books, newBook];
-        localStorage.setItem('books', JSON.stringify(this.books));
+        this.saveBooks();
     }
 
 
@@ -75,15 +75,28 @@ export default class BookStoreService extends Service {
     }
 
     @action
+    saveBooks() {
+        localStorage.setItem('books', JSON.stringify(this.books));
+    }
+
+    @action
     assignBook(bookId, studentId) {
-        const book = this.books.find(b => b.id === bookId);
-        if (!book) return;
-
-        if (!book.issuedTo.includes(studentId)) {
-            book.issuedTo.push(studentId);
-            book.issuedCount += 1;
-
-            this.saveBooks();
-        }
+        const dueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        this.books = this.books.map(book => {
+            if(book.id === bookId) {
+                const issuedInfo = book.issuedInfo || [];
+                if(!issuedInfo.some(entry => entry.studentId === studentId)) {
+                    issuedInfo.push({ studentId, dueDate });
+                    return {
+                        ...book,
+                        issuedCount: book.issuedCount + 1,
+                        issuedInfo
+                    };
+                }
+            }
+            return book;
+        });
+        this.saveBooks();
+        alert(`Book assigned to Student ID: ${studentId}`);
     }
 }

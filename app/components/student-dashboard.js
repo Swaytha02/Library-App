@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { books as defaultBooks } from '../data/books';
 
 export default class StudentDashboard extends Component {
     @service session;
@@ -22,22 +23,31 @@ export default class StudentDashboard extends Component {
 
     get issuedBooks() {
         const today = new Date();
+        
         return this.books
-        .filter(book => book.isIssued && book.issuedTo === this.session.currentUser.id)
-        .map(book => ({
-            ...book, 
-            isOverdue: book.dueDate ? new Date(book.dueDate) < today : false
-        }));
+        .map(book => {
+            const studentEntries = (book.issuedInfo || [])
+            .filter(entry => entry.studentId === this.session.currentUser.id)
+            .map(entry => ({
+                ...book,
+                issuedInfo: [{
+                    ...entry,
+                    isOverdue: entry.dueDate ? new Date(entry.dueDate) < today : false
+                }]
+            }));
+            return studentEntries;
+        })
+        .flat();
     }
 
     get totalIssued() {
-        return this.books.filter(book => book.issuedTo === this.session.currentUser.id);
+        return this.books.filter(book =>
+            book.issuedInfo?.some(info => info.studentId === this.session.currentUser.id)
+        );
     }
 
     get overDueBooks() {
-        const today = new Date();
-        return this.issuedBooks
-        .filter(book => book.dueDate && new Date(book.dueDate) < today);
+        return this.issuedBooks.filter(book => book.issuedInfo?.[0]?.isOverdue);
     }
 
     get sortedBooks() {
@@ -58,9 +68,11 @@ export default class StudentDashboard extends Component {
         const books = JSON.parse(localStorage.getItem('books')) || [];
 
         return books.filter(book => {
-            const total = book.count || 0;
-            const issued = book.issuedCount || 0;
-            return total > issued;
+            const issued = book.issuedInfo?.length || 0;
+            const alreadyIssuedToUser = book.issuedInfo?.some(
+              entry =>  entry.studentId === this.session.currentUser.id 
+            );
+            return book.count > issued && !alreadyIssuedToUser;
         });
     }
 

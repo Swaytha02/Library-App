@@ -71,15 +71,17 @@ export default class DashboardTotalStudent extends Component {
         const books = JSON.parse(localStorage.getItem('books')) || [];
         const updatedBooks = books.map(book => {
             if (book.id === request.bookId) {
-                const issuedCount = (book.issuedCount || 0) + 1;
+                const dueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                const issuedInfo = book.issuedInfo || [];
+                issuedInfo.push({
+                    studentId: request.studentId,
+                    dueDate
+                });
+
                 return {
                     ...book,
-                    isIssued: true,
-                    issuedTo: request.studentId,
-                    dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 7 days from now
-                    issuedCount,
-                    isRequested: false,
-                    requestedBy: null
+                    issuedCount: (book.issuedCount || 0) + 1,
+                    issuedInfo
                 };
             }
             return book;
@@ -113,7 +115,9 @@ export default class DashboardTotalStudent extends Component {
     @action
     getIssuedBooks(studentId) {
         const books = JSON.parse(localStorage.getItem('books')) || [];
-        return books.filter(book => book.issuedTo === studentId);
+        return books.filter(book =>
+            book.issuedInfo?.some(info => info.studentId === studentId)
+        );
     }
 
     get booksSummary() {
@@ -131,14 +135,14 @@ export default class DashboardTotalStudent extends Component {
         const books = JSON.parse(localStorage.getItem('books')) || [];
 
         const updatedBooks = books.map(book => {
-            if(book.id === request.bookId && book.issuedTo === request.studentId) {
-                const issuedCount = Math.max((book.issuedCount || 1) - 1 ,0);
+            if(book.id === request.bookId) {
+                const issuedInfo = (book.issuedInfo || []).filter(
+                    info => info.studentId !== request.studentId
+                );
                 return {
                     ...book,
-                    isIssued: false,
-                    issuedTo: null,
-                    dueDate: null,
-                    issuedCount
+                    issuedCount: Math.max((book.issuedCount || 1) - 1, 0),
+                    issuedInfo
                 };
             }
             return book;
