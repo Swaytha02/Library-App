@@ -24,7 +24,7 @@
                         {{#if issuedBooks.length}}
                         <ul>
                             {{#each issuedBooks as |book|}}
-                                <li>{{book.title}} - Due on {{book.issuedInfo.[0].dueDate}}</li>
+                                <li>{{book.title}} - Due on {{get book.issuedInfo "0.dueDate"}}</li>
                             {{/each}}
                         </ul>
                         {{else}}
