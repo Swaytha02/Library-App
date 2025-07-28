@@ -25,6 +25,7 @@ export default class BookIssued extends Component {
 
     @action 
     assignBookToStudent(bookId) {
+        const studentId = this.studentInputs[bookId];
         const studentExists = this.studentStore.students.some(s => s.id === studentId);
         if (!studentExists) {
             alert('Invalid student ID');
@@ -66,7 +67,7 @@ export default class BookIssued extends Component {
         }
 
         this.studentStore.addStudent({
-            id: String(this.studentStore.students.length + 2),
+            id: `stu${this.studentStore.students.length + 1}`,
             name: this.newStudentName,
             password: this.newStudentPassword,
             role: 'student',

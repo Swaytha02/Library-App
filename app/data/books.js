@@ -6,9 +6,9 @@ export const books = [
     count: 100,
     issuedCount: 3,
     issuedInfo: [
-      { studentId: 'stu1', dueDate: '2025-08-05' },
-      { studentId: 'stu2', dueDate: '2025-08-03' },
-      { studentId: 'stu3', dueDate: '2025-08-01' }
+      { studentId: 'stu1', dueDate: '2025-08-05' }, 
+      { studentId: 'stu2', dueDate: '2025-07-20' }, 
+      { studentId: 'stu3', dueDate: '2025-07-10' }  
     ]
   },
   {
@@ -18,8 +18,8 @@ export const books = [
     count: 50,
     issuedCount: 2,
     issuedInfo: [
-      { studentId: 'stu4', dueDate: '2025-08-04' },
-      { studentId: 'stu5', dueDate: '2025-08-02' }
+      { studentId: 'stu4', dueDate: '2025-08-04' }, 
+      { studentId: 'stu5', dueDate: '2025-07-18' }  
     ]
   },
   {
@@ -27,7 +27,9 @@ export const books = [
     title: '1984',
     author: 'George Orwell',
     count: 200,
-    issuedCount: 0,
-    issuedInfo: []
+    issuedCount: 1,
+    issuedInfo: [
+      { studentId: 'stu6', dueDate: '2025-07-22' } 
+    ]
   }
 ];

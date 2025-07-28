@@ -6,9 +6,24 @@
   <div class="modal-overlay">
     <div class="modal">
       <h2>Add New Student</h2>
-      <input type="text" placeholder="Name" {{on "input" this.updateStudentNameField}} />
-      <input type="text" placeholder="Password" {{on "input" this.updateStudentUsernameField}} />
-      <input type="text" placeholder="Username" {{on "input" this.updateStudentPassword}} />
+      <input 
+      type="text" 
+      placeholder="Name" 
+      value={{this.newStudentName}}
+      {{on "input" this.updateStudentNameField}} />
+      
+      <input 
+      type="text" 
+      placeholder="Password" 
+      value={{this.newStudentUsername}}
+      {{on "input" this.updateStudentUsernameField}} />
+      
+      <input 
+      type="text" 
+      placeholder="Username" 
+      value={{this.newStudentPassword}}
+      {{on "input" this.updateStudentPassword}} />
+      
       <div class="modal-buttons">
         <button type="button" {{on "click" this.addStudent}}>Save</button>
         <button type="button" {{on "click" this.toggleStudentModal}}>Cancel</button>
@@ -23,10 +38,10 @@
         <td>{{book.id}}</td>
         <td>{{book.title}}</td>
         <td>{{book.author}}</td>
-        <td>{{book.count}}</td>
+        <td>{{subtract book.count book.issuedCount}} / {{book.count}}</td>
         <td>
-          {{#if book.issuedTo}}
-            {{book.issuedTo}}
+          {{#if book.issuedCount}}
+            {{book.issuedCount}}
           {{else}}
             Not Assigned
           {{/if}}

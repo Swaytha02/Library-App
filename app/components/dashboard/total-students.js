@@ -123,9 +123,15 @@ export default class DashboardTotalStudent extends Component {
     get booksSummary() {
         const books = JSON.parse(localStorage.getItem('books')) || [];
 
-        const total = books.length;
-        const issued = books.filter(book => book.issuedCount > 0).length;
-        const available = books.filter(book => (book.count || 1) > (book.issuedCount || 0)).length;
+        const total = books.reduce((acc, book) => {
+            return book.count + acc;
+        }, 0);
+        const issued = books.reduce((acc,book) => {
+            return book.issuedCount + acc;
+        },0);
+        const available = books.reduce((acc, book) => {
+            return (book.count - book.issuedCount) + acc;
+        }, 0);
 
         return { total, issued, available, books }
     }

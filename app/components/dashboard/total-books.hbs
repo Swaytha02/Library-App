@@ -23,7 +23,7 @@
         <td>{{book.id}}</td>
         <td>{{book.title}}</td>
         <td>{{book.author}}</td>
-        <td>{{subtract book.count book.issuedCount}}</td>
+        <td>{{subtract book.count book.issuedCount}} / {{book.count}}</td>
     </tr>
     {{/each}}
 </Dashboard::BookDetails>
